@@ -39,8 +39,7 @@ jobs:
       - name: 'generate_delta_packages'
         run: |
          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-         export LAST_DEPLOYED_COMMIT=$(git show-ref -s master)
-         sfdx sgd:source:delta --to HEAD --from HEAD^ --output .
+         sfdx sgd:source:delta --to HEAD --from $(git show-ref -s master) --output .
          echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT ---"
          cat package/package.xml
          echo
