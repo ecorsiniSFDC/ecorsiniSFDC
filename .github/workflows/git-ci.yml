@@ -19,8 +19,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name:'instal sfdx git delta pluging'
-      run: 'echo y | sfdx plugins:install sfdx-git-delta'
+      - name: 'instal sfdx git delta pluging'
+        run: 'echo y | sfdx plugins:install sfdx-git-delta'
       
       # Checkout the code in the pull request
       - name: Checkout
