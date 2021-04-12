@@ -20,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name:instal sfdx git delta pluging
-      # # Install Salesforce  pluging
+      #  Install Salesforce  pluging
       run: |
         echo y | sfdx plugins:install sfdx-git-delta
       # - uses: docker://ecorsinisf/sfdx-cli-gitaction
