@@ -14,11 +14,13 @@ jobs:
   ci-check:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    container:
+      image: ecorsinisf/sfdx-cli-gitaction
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Install Salesforce CLI and pluging 
-      - uses: docker://ecorsinisf/sfdx-cli-gitaction
+      # # Install Salesforce CLI and pluging 
+      # - uses: docker://ecorsinisf/sfdx-cli-gitaction
 
       # Checkout the code in the pull request
       - name: Checkout
