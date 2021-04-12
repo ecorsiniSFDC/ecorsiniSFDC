@@ -39,7 +39,7 @@ jobs:
       - name: 'generate_delta_packages'
         run: |
          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-         sfdx sgd:source:delta --to HEAD --from $(git show-ref -s master) --output .
+         sfdx sgd:source:delta --to HEAD --from master --output .
          echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT ---"
          cat package/package.xml
          echo
@@ -49,7 +49,7 @@ jobs:
 
       - name: 'check-only'
         run : |
-          echo "Check-Only"
+          echo "Delta Check-Only"
           sfdx force:source:deploy -c -u CI -x package/package.xml -l RunLocalTests
 
   qauk-check:
@@ -75,9 +75,8 @@ jobs:
       - name: 'generate_delta_packages'
         run: |
          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
-         export LAST_DEPLOYED_COMMIT=$(git show-ref -s master)
-         sfdx sgd:source:delta -a 51 -t HEAD -f $LAST_DEPLOYED_COMMIT -r . -o . -i manifest/mdapi/.sgdignore
-         echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT ---"
+         sfdx sgd:source:delta --to HEAD --from master --output .
+         echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT Master ---"
          cat package/package.xml
          echo
          echo "--- destructiveChanges.xml generated with deleted metadata since $LAST_DEPLOYED_COMMIT ---"
@@ -86,5 +85,5 @@ jobs:
 
       - name: 'check-only'
         run : |
-         echo "Full Check-Only"
+         echo "Delta Check-Only"
          sfdx force:source:deploy -c -u QAUK -x package/package.xml -l RunLocalTests
