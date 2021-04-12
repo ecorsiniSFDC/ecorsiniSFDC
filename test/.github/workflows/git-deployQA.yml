@@ -1,0 +1,100 @@
+# Unique name for this workflow
+name: PR Validation (sandbox)
+
+# Controls when the action will run. 
+on:
+  pull_request:
+    branches: [development]
+
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ci-check:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Install Salesforce CLI
+      - name: Install Salesforce CLI 
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          mkdir sfdx-cli
+          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+          ./sfdx-cli/install
+
+      # Cache node_modules to speed up the process
+      - name: Restore node_modules cache
+        id: cache-npm
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Checkout the code in the pull request
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Store secret for dev hub
+      # org_auth_url parameter can be obtained by reading the "Sfdx Auth Url" returned by: sfdx force:org:display --verbose
+      - name: 'Populate auth file with CI_SFDX_URL secret'
+        shell: bash
+        run: 'echo ${{ secrets.CI_SFDX_URL}} > ./CI_SFDX_URL.txt'
+
+        # Authenticate
+      - name: 'Authenticate'
+        run: 'sfdx force:auth:sfdxurl:store -f ./CI_SFDX_URL.txt -a CI -d'
+
+      - name: 'check-only'
+        run : |
+         echo "Full Check-Only"
+         sfdx force:source:deploy -c -u CI -p force-app -l RunLocalTests
+
+  sit-check:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Install Salesforce CLI
+      - name: Install Salesforce CLI 
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          mkdir sfdx-cli
+          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+          ./sfdx-cli/install
+
+      # Cache node_modules to speed up the process
+      - name: Restore node_modules cache
+        id: cache-npm
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Checkout the code in the pull request
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Store secret for dev hub
+      # org_auth_url parameter can be obtained by reading the "Sfdx Auth Url" returned by: sfdx force:org:display --verbose
+      - name: 'Populate auth file with SIT_SFDX_URL secret'
+        shell: bash
+        run: 'echo ${{ secrets.SIT_SFDX_URL}} > ./SIT_SFDX_URL.txt'
+
+        # Authenticate
+      - name: 'Authenticate'
+        run: 'sfdx force:auth:sfdxurl:store -f ./SIT_SFDX_URL.txt -a SIT -d'
+
+      - name: 'check-only'
+        run : |
+         echo "Full Check-Only"
+         sfdx force:source:deploy -c -u SIT -p force-app -l RunLocalTests
+
+
