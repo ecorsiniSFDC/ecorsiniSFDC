@@ -1,5 +1,5 @@
 # Unique name for this workflow
-name: PR Validation delta (sandbox)
+name: PR Validation delta (sandbox) image
 
 # Controls when the action will run. 
 on:
@@ -18,7 +18,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Install Salesforce CLI and pluging 
-       - uses: docker://ecorsinisf/sfdx-cli-gitaction
+      - uses: docker://ecorsinisf/sfdx-cli-gitaction
 
       # Checkout the code in the pull request
       - name: Checkout
