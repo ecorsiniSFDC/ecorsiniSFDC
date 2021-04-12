@@ -40,7 +40,7 @@ jobs:
         run: |
          git fetch origin "+refs/heads/*:refs/remotes/origin/*"
          export LAST_DEPLOYED_COMMIT=$(git show-ref -s master)
-         sfdx sgd:source:delta -a 51 -t HEAD -f $LAST_DEPLOYED_COMMIT -r . -o . -i manifest/mdapi/.sgdignore
+         sfdx sgd:source:delta -a 51 -t HEAD -f $LAST_DEPLOYED_COMMIT -r . -o .
          echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT ---"
          cat package/package.xml
          echo
