@@ -1,5 +1,5 @@
 public with sharing class ManuTest {
     public ManuTest() {
-        String test2;
+        String test;
     }
 }

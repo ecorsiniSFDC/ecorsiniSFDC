@@ -28,10 +28,7 @@ jobs:
 
       # Install Salesforce CLI
       - name: Install sfdxGit delta
-        run: |
-         echo y
-         sfdx plugins:install sfdx-git-delta
-         sfdx plugins      
+        run: 'echo y | sfdx plugins:install sfdx-git-delta'   
 
       # Cache node_modules to speed up the process
       - name: Restore node_modules cache
