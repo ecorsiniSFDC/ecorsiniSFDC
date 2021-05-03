@@ -58,7 +58,6 @@ jobs:
       
       - name: 'generate_delta_packages'
         run: |
-         git fetch origin "+refs/heads/*:refs/remotes/origin/*"
          sfdx sgd:source:delta -a 51 --to HEAD --from HEAD~1 --output . -i manifest/mdapi/.sgdignore
          echo "--- package.xml generated with added and modified metadata since $LAST_DEPLOYED_COMMIT ---"
          cat package/package.xml
