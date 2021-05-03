@@ -1,6 +1,5 @@
 ## Ignore file for sgd (delta deployments)
 **/audience/*
-**/navigationMenus/*
 **/documents/*
 **/installedPackage/*
 .github/workflows
