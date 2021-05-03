@@ -29,6 +29,7 @@ jobs:
       # Install Salesforce CLI
       - name: Install sfdxGit delta
         run: |
+         echo y
          sfdx plugins:install sfdx-git-delta
          sfdx plugins      
 
